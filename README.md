@@ -19,7 +19,7 @@ This can be used to control UE5 actors, characters, and environments with simple
 
  If you download from Fab, it will be in your Epic Games Launcher, Unreal Engine Libray:
 
-![Install Plugin to Libary](media\tcp_socket_plugin_uelibrary.jpg)
+![Install Plugin to Libary](media/tcp_socket_plugin_uelibrary.jpg)
 
 Then install to engine.
 
@@ -32,7 +32,7 @@ Enable blueprints.
 3. Search for 'tcp' and it should appear at the top of the list
 
 
-![Project screenshot](media\tcp_socket_plugin_enable.jpg)
+![Project screenshot](media/tcp_socket_plugin_enable.jpg)
 
 Enable plugin the and a window will pop-up up prompting you to restart UE Editor, click **Restart Now**
 
