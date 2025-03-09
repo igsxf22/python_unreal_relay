@@ -9,6 +9,37 @@ This can be used to control UE5 actors, characters, and environments with simple
     - Example: Add context to the SITL world by simulating a lidar height sensor
 
 
-### Setup from new Unreal Engine 5 - Blank Game with Blueprints
-1. Download tcp_relay.py
-2. in work
+## Setup from new Unreal Engine 5 - Blank Game with Blueprints
+
+### Download SpartanCode TCP Socket Plugin
+ - Fab Page: https://www.fab.com/listings/48db4522-8a05-4b91-bcf8-4217a698339b
+ - Github: https://github.com/CodeSpartan/UE4TcpSocketPlugin
+
+<br>
+
+ If you download from Fab, it will be in your Epic Games Launcher, Unreal Engine Libray:
+
+![Install Plugin to Libary](media\tcp_socket_plugin_uelibrary.jpg)
+
+Then install to engine.
+
+### Create a new UE5 Game with Blank Template
+Enable blueprints.
+
+### Launch Editor and Activate Plugin
+1. Click Settings drop-down in the top-right of your editor window
+2. Click Plugins
+3. Search for 'tcp' and it should appear at the top of the list
+
+![Enable Plugin to Libary](media\tcp_socket_plugin_enable.jpg)<br>
+Enable plugin the and a window will pop-up up prompting you to restart UE Editor, click **Restart Now**
+
+### Set up TCP Relay Actor using TCP Socket Plugin
+We'll create an invisible actor that we can drag into the level
+
+#### Download Blueprints
+1. bp_tcpRelay_no_bpi
+2. bp_tcpRelay_bpi
+
+
+
