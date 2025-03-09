@@ -31,7 +31,9 @@ Enable blueprints.
 2. Click Plugins
 3. Search for 'tcp' and it should appear at the top of the list
 
-![Enable Plugin to Libary](media\tcp_socket_plugin_enable.jpg)<br>
+
+![Project screenshot](media\tcp_socket_plugin_enable.jpg)
+
 Enable plugin the and a window will pop-up up prompting you to restart UE Editor, click **Restart Now**
 
 ### Set up TCP Relay Actor using TCP Socket Plugin
