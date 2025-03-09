@@ -61,9 +61,10 @@ class TCP_Relay:
         client_socket (socket.socket): The client socket connected to the server.
         thread (threading.Thread): The thread running the sender method.
     """
-    def __init__(self, num_fields=23, host="127.0.0.1", port=1234):
+    def __init__(self, num_fields=23, host="127.0.0.1", port=1234, size=1024):
         self.server_socket = create_tcp_host(host, port)
         self.num_fields = num_fields
+        self.size = size
         self.message = create_fields_string([0.] * self.num_fields)
         self.linked = False
         self.message_in = None
@@ -74,7 +75,7 @@ class TCP_Relay:
 
     def _server(self):
         while True:
-            if self.linked:
+            while self.linked:
                 try:
                     self.message_in = self.client_socket.recv(1024)
                 except socket.error as e:
@@ -99,3 +100,30 @@ class TCP_Relay:
                     print(f"Accept error: {e}")
 
             time.sleep(0.002)
+
+# Example usage
+if __name__ == "__main__":
+
+    relay = TCP_Relay()
+
+    x, y, z = 0., 0., 0.
+    roll, pitch, yaw = 0., 0., 0.
+
+    fields = [0.] * relay.num_fields
+    fields[:6] = [x, y, z, roll, pitch, yaw]  # Example values
+
+    while True:
+
+        x, y, z = [(i + 1.0) for i in [x, y, z]]
+        roll, pitch, yaw = [(i + 1.0) for i in [roll, pitch, yaw]]
+        fields[:6] = [x, y, z, roll, pitch, yaw]
+
+        relay.message = create_fields_string(fields)  # Example message
+        print("Message Out:", relay.message)
+
+        if relay.message_in:
+            print("Message in:", relay.message_in)
+        else:
+            print("No message received.")
+
+        time.sleep(1)
