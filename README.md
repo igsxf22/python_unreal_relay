@@ -37,11 +37,29 @@ Enable blueprints.
 Enable plugin the and a window will pop-up up prompting you to restart UE Editor, click **Restart Now**
 
 ### Set up TCP Relay Actor using TCP Socket Plugin
-We'll create an invisible actor that we can drag into the level
+We'll import the invisible TCP Relay actor that we can drag into the level
 
-#### Download Blueprints
-1. bp_tcpRelay_no_bpi
-2. bp_tcpRelay_bpi
+### Download Blueprints
 
+From repo: `bp_tcpRelay_no_bpi.uassest`
 
+Does not include a blueprint interface for cleaner import
 
+Place this in your Unreal Project folder in Explorer, for example on windows in the default Unreal Engine save path, ie: <br>
+
+`C:\Users\__user__\Documents\Unreal Projects\myTcpRelayProject\Content\custom`
+
+For example, in explorer:
+
+![Project screenshot](media/example_save_location.jpg)
+
+### Drag into Level
+The `bp_tcpRelay_no_bpi.uassest` will show up in your content/custom folder in the Content Drawer
+
+![Project screenshot](media/custom_content_with_imported_asset.jpg)
+
+**Now just drag and drop into the level**
+
+![Project screenshot](media/asset_in_level.jpg)
+
+> If you're not seeing data - make sure you remembered to place this in the level
