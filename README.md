@@ -42,7 +42,7 @@ We'll import the invisible TCP Relay actor that we can drag into the level
 
 From repo: `bp_tcpRelay_no_bpi.uassest`
 
-Does not include a blueprint interface for cleaner import
+Does not include a blueprint interface nodes in the blueprint for cleaner import
 
 Place this in your Unreal Project folder in Explorer, for example on windows in the default Unreal Engine save path, ie: <br>
 
