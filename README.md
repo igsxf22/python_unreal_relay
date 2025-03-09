@@ -62,4 +62,4 @@ The `bp_tcpRelay_no_bpi.uassest` will show up in your content/custom folder in t
 
 ![Project screenshot](media/asset_in_level.jpg)
 
-> If you're not seeing data - make sure you remembered to place this in the level
+> If you're not seeing data - make sure you remembered to place actor in the new level
