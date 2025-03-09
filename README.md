@@ -63,3 +63,15 @@ The `bp_tcpRelay_no_bpi.uassest` will show up in your content/custom folder in t
 ![Project screenshot](media/asset_in_level.jpg)
 
 > If you're not seeing data - make sure you remembered to place actor in the new level
+
+## Look for data moving between Python and UE5
+Run `tcp_relay.py` as main python script to create a basic relay.
+
+The code has notional variables for x, y, z, pitch, roll, yaw, +=1 every tick 
+This data will stream constantly to the UE TCP Relay actor
+
+- The Python code will print the data it's sending out and data its receiving (23 fields out, 3 in by default)<br>
+![Project screenshot](media/python_data_exchanged.jpg)
+
+- The UE Editor will print the data its receiving in yellow and sending in green<br>
+![Project screenshot](media/data_exchanged.jpg)
