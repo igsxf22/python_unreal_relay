@@ -1,4 +1,4 @@
-# Realtime Python Pawn Control in Unreal Engine 5 with TCP
+# Control Actors and Pawns in UE5 with Python in Realtime 
 
 This project provides a simple way with native python libraries to exchange real-time data from a python script to an Unreal Engine 5 runtime
 
