@@ -131,7 +131,7 @@ Start play-in-editor runtime. The pawn should begin moving and rotating based on
 Here's an overview of the entire process:
 ```
 Python:
-    inits a TCP_Relay object
+    with a TCP_Relay object
     creates msg_out string: "{x} {y} {z} {pitch} {roll} {yaw} ... "
     TCP Relay server sends bytes(msg_out) to client
 
