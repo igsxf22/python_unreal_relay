@@ -8,6 +8,14 @@ This can be used to control UE5 actors, characters, and environments with simple
     - Example: Add context to the SITL world by simulating a lidar height sensor
 
 
+`bp_tcpRelay_no_bpi.uasset`
+- Full blueprint image: [bp_tcpRelay - Graph](media/bp_tcpRelay_overall.jpg)
+
+    See the top and bottom halfs of the graph in better detail:
+    - Top: [bp_tcpRelay - Graph Top](media\bp_tcpRelay_noBpi_graph_top.jpg)
+    - Bottom: [bp_tcpRelay - Graph Bottom](media\bp_tcpRelay_noBpi_graph_bottom.jpg)
+
+
 ## Setup from new Unreal Engine 5 - Blank Game with Blueprints
 
 ### Download SpartanCode TCP Socket Plugin
@@ -64,10 +72,9 @@ The `bp_tcpRelay_no_bpi.uassest` will show up in your content/custom folder in t
 > If you're not seeing data - make sure you remembered to place actor in the new level
 
 ## Look for data moving between Python and UE5
-Run `tcp_relay.py` as main python script to create a basic relay.
+Run `tcp_relay.py` as main python script to create the relay sever.
 
-The code has notional variables for x, y, z, pitch, roll, yaw, +=1 every tick 
-This data will stream constantly to the UE TCP Relay actor
+> The code has notional variables for x, y, z, pitch, roll, yaw, which will increase by 1 every second and stream to the TCP Relay actor
 
 With your TCP relay actor placed in the UE level, start the Play in Editor to launch the game runtime
 
@@ -82,15 +89,39 @@ With your TCP relay actor placed in the UE level, start the Play in Editor to la
 ![Project screenshot](media/python_data_exchanged.jpg)
 
 ### Creating a Blueprint Interface to Communicate with Actors
-tbd
+1. Download `bpi_relay.uasset`
+
+    OR
+
+2. Create new blueprint inferface
+    - Create a new blueprint interface object: `bpi_relay`
+    - in blueprint interface editor, create function `relay_float_array`
+    - Create a `floats` array as an input
+    ![Project screenshot](media//simple_blueprint_interface_float_array.jpg)
+
+### Add Blueprint Interface to TCP Relay Blueprint
+#### Add blueprint interface message to communicate with target actor
+ - In the TCP Relay blueprint editor, open the Class Settings and add the "bpi_relay" interface from the "Implemented Interfaces - Add" dropdown
+
+ - Create a Relay Float Array (Message) node that executes after we convert our `msg_in` string our to `floats_in` array, plug in our `Send_To` actor as the target and our `Floats_in` array as the data to send
+
+    ![Project screenshot](media/bpi_relay_msg_to_actor.jpg)
+
+#### Implement bpi_relay function as a custom event in the TCP Relay actor
+Implement this event to recieve data back from the `send_to` actor
+    ![Project screenshot](media/bpi_get_floats_from_actors.jpg)
 
 
-### Controlling a basic UE5 Actor
+### Controlling a basic UE5 Actor or Pawn
 We'll use the notional x, y, z, roll, pitch, yaw values we're sending in the example code to set the transform of a pawn in UE5.
 
-- You can use this pawn as your player character or change the default mode to Spectator Camera and look for the moving pawn to confirm its working
+ > You can use this pawn as your player character or change the default mode to Spectator Camera and look for the moving pawn to confirm its working
 
-1. Create a new pawn blueprint
+> You may need to create a new blank GameMode to select the pawn as your default player pawn class, or swap to FunctionalTest mode to use spectactor camera as player pawn
+
+1. Create a new Pawn blueprint
+
+    > You can also just use the Actor class if you don't need the controlled actor to be a player
 
 2. In event graph, edit blueprints:
 
@@ -104,6 +135,7 @@ We'll use the notional x, y, z, roll, pitch, yaw values we're sending in the exa
 5. Create a new transform variable `transform`
 
 Iterate through the floats_in array and assign the values to the transform object
+
     ```
     x = floats_in[0]`
     y = floats_in[1]`
