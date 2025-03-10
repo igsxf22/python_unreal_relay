@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
     while True:
 
-        x, y, z = [(i + 1.0) for i in [x, y, z]]
+        x, y, z = [(i + 10.0) for i in [x, y, z]]
         roll, pitch, yaw = [(i + 1.0) for i in [roll, pitch, yaw]]
         fields[:6] = [x, y, z, roll, pitch, yaw]
 

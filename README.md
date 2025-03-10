@@ -13,8 +13,6 @@ This can be used to control UE5 actors, characters, and environments with simple
 `bp_tcpRelay_no_bpi.uasset`<br>
 Blueprint that uses the SpartanCode TCP Socket Plugin parent class to convert bytes from Python to an array of floats
 - Full blueprint image: [bp_tcpRelay - Graph](media/bp_tcpRelay_overall.png)<br>
-- Top: [bp_tcpRelay - Graph Top](media/bp_tcpRelay_noBpi_graph_top.jpg)
-- Bottom: [bp_tcpRelay - Graph Bottom](media/bp_tcpRelay_noBpi_graph_bottom.jpg)
 <br>
 
 `bpi_relay.uasset`<br>
@@ -23,10 +21,10 @@ Blueprint that uses the SpartanCode TCP Socket Plugin parent class to convert by
  ### Quick How-To
  1. Start a new UE project and enable the SpartanCode TCP Socket Plugin
  2. Add the `bp_tcpRelay`, `bpi_relay`, and `bp_pythoPawn` to your project
- 3. In your `tcpRelay` actor, use the `Get Actor of Class` to identify the `pythonPawn` as the target for the blueprint interface
- 4. Conversely, in your `pythonPawn`, use the `Get Actor of Class` node to indetify the `tcpRelay` actor
- 5. Add the message and custom event fuctions from `bpi_relay` to the proper nodes in the `tcpRelay` and `pythonPawn` graphs
- 6. Place your `tcpRelay` actor in the level, and either place the `pythonPawn` actor in the level or make it your player pawn
+ 3. In your `bp_tcpRelay` actor, use the `Get Actor of Class` to identify the `pythonPawn` as the `send_to` actor
+ 4. Conversely, in your `bp_pythonPawn`, use the `Get Actor of Class` node to indetify the `bp_tcpRelay` actor
+ 5. Place your `tcpRelay` actor in the level
+ 6. Place the `pythonPawn` actor in the level, or, make it your player pawn (you might need to create a new blank GameMode to change default player pawn)
  7. Launch `tcp_relay.py` as a main python script and it will start sending values to UE5
  8. The `pythonPawn` should begin moving and rotating based on the python script
  9. The python script will recieve bytes containing the three floats generated in realtime from the `pythonPawn` (you can parse with .split() and convert to floats) 
@@ -54,7 +52,6 @@ Enable blueprints.
 2. Click Plugins
 3. Search for 'tcp' and it should appear at the top of the list
 
-
 ![Project screenshot](media/tcp_socket_plugin_enable.jpg)
 
 Enable plugin the and a window will pop-up up prompting you to restart UE Editor, click **Restart Now**
@@ -63,31 +60,29 @@ Enable plugin the and a window will pop-up up prompting you to restart UE Editor
 We'll import the invisible TCP Relay actor that we can drag into the level
 
 ### Download Blueprints
+```
+bp_tcpRelay.uassest
+bp_pythonPawn.uasset
+bpi_relay.uasset
+```
+Create a `custom` folder in the `content` folder in the Content Drawer. In Explorer,place these blueprints in you Unreal Project/content folder
 
-From repo: `bp_tcpRelay_no_bpi.uassest`
+> For example on windows in the default Unreal Engine save path it looks like: <br>
+ C:\Users\<username>\Documents\Unreal Projects\myTcpRelayProject\Content\custom
 
-Does not include a blueprint interface nodes in the blueprint for cleaner import
+Back in Unreal Editor, they should appear in your content drawer:
 
-Place this in your Unreal Project folder in Explorer, for example on windows in the default Unreal Engine save path, ie: <br>
+![Project screenshot](media/downloaded_assets_in_content_drawer.jpg)
 
-`C:\Users\__user__\Documents\Unreal Projects\myTcpRelayProject\Content\custom`
+### Drag bp_tcpRelay actor and bp_pythonPawn pawn into the level
 
-For example, in explorer:
+> If you're not seeing data, make sure you remembered to place the tcpRelay actor in your level
 
-![Project screenshot](media/example_save_location.jpg)
+> If you want to use the bp_pythonPawn as the default player pawn instead, you'll probably have create a new blankGame mode
 
-### Drag into Level
-The `bp_tcpRelay_no_bpi.uassest` will show up in your content/custom folder in the Content Drawer
+![Project screenshot](media/assets_in_level.jpg)
 
-![Project screenshot](media/custom_content_with_imported_asset.jpg)
-
-**Now just drag and drop into the level**
-
-![Project screenshot](media/asset_in_level.jpg)
-
-> If you're not seeing data - make sure you remembered to place actor in the new level
-
-## Look for data moving between Python and UE5
+## Look for data exchange between Python and UE5
 Run `tcp_relay.py` as main python script to create the relay sever.
 
 > The code has notional variables for x, y, z, pitch, roll, yaw, which will increase by 1 every second and stream to the TCP Relay actor
@@ -104,81 +99,56 @@ With your TCP relay actor placed in the UE level, start the Play in Editor to la
 
 ![Project screenshot](media/python_data_exchanged.jpg)
 
-### Creating a Blueprint Interface to Communicate with Actors
-1. Download `bpi_relay.uasset`
-
-    OR
-
-2. Create new blueprint inferface
-    - Create a new blueprint interface object: `bpi_relay`
-    - in blueprint interface editor, create function `relay_float_array`
-    - Create a `floats` array as an input
-    ![Project screenshot](media//simple_blueprint_interface_float_array.jpg)
-
-### Add Blueprint Interface to TCP Relay Blueprint
-#### Add blueprint interface message to communicate with target actor
- - In the TCP Relay blueprint editor, open the Class Settings and add the "bpi_relay" interface from the "Implemented Interfaces - Add" dropdown
-
- - Create a Relay Float Array (Message) node that executes after we convert our `msg_in` string our to `floats_in` array, plug in our `Send_To` actor as the target and our `Floats_in` array as the data to send
-
-    ![Project screenshot](media/bpi_relay_msg_to_actor.jpg)
-
-#### Implement bpi_relay function as a custom event in the TCP Relay actor
-Implement this event to recieve data back from the `send_to` actor
-    ![Project screenshot](media/bpi_get_floats_from_actors.jpg)
-
-
 ### Controlling a basic UE5 Actor or Pawn
-We'll use the notional x, y, z, roll, pitch, yaw values we're sending in the example code to set the transform of a pawn in UE5.
-
- > You can use this pawn as your player character or change the default mode to Spectator Camera and look for the moving pawn to confirm its working
-
-> You may need to create a new blank GameMode to select the pawn as your default player pawn class, or swap to FunctionalTest mode to use spectactor camera as player pawn
-
-#### Download sample pawn
-Download `bp_pythonPawn_noBpi.uasset`
-> Suggest duplicating this asset as `bp_pythonPawn_bpi` before making edits
-
-First, add bpi_relay to Implemented Inferfaces
-
-Make these three edits to the pythonPawn blueprint:
-
-#### Create sample pawn
-
-1. Create a new Pawn blueprint
-
-    > You can also just use the Actor class if you don't need the controlled actor to be a player
-
-2. Create variables:
-    ```
+The example pawn has the following variables:
+```
+Premade:
     data_live: bool
     location: vector
     rotation: rotator
     floats_out = float_array (default 3 items)
-    ```
-    
-    We'll also create variables `relay_actor` and `floats_in` by promoting output nodes to variables 
 
-3. In event graph, identify Tcp Relay actor to communicate with:
+Promoted from nodes to avoid conflicts:
+    relay_actor: bp_tcpRelay actor (inherits class)
+    floats_in: float_array (inherits size)
+```
+The example pawn recieves the x, y, z, roll, pitch, yaw in the first six items we send from python to UE.
 
-    `Event Begin Play: --> Get Actor of Class --> Promote Actor to new variable: relay_actor`
-    - Use the Get Actor of Class node to select the class of the tcp_relay actor (*if you're using the one in this repo, it'd be `bp_tcpRelay_no_bpi`*)
-    - This is now the `relay_actor` variable
+```
+floats_in[:3] --> location vector
+floats_in[:6] --> rotation rotator
+```
 
-4. In Class Settings, add the blueprint interface (*ie `bpi_relay`*) to your Implemented Interfaces. Then, implement the event in your Event Graph.
+Then we use an `Actor Set Location and Rotation` node using the location vector and rotation rotator
 
-5. Implement the `relay_float_array` as a custom event, connect to the branch using the `live_data` bool (prevents attempts to parse until next tick) and promote output to `floats_in`
+Start play-in-editor runtime. The pawn should begin moving and rotating based on the python values
+![Project screenshot](media/success_pawn_control.jpg)
 
-6. In event tick loop, parse `floats_in` and assign values by index to `location` and `rotation` variables
-    ```
-    x = floats_in[0]`
-    y = floats_in[1]`
-    z = floats_in[2]`
-    roll = floats_in[3]`
-    pitch = floats_in[4]`
-    yaw = floats_in[5]`
-    
-    ```
+Here's an overview of the entire process:
+```
+Python:
+    inits a TCP_Relay object
+    creates msg_out string: "{x} {y} {z} {pitch} {roll} {yaw} ... "
+    TCP Relay server sends bytes(msg_out) to client
 
-7. Use the `location` and `rotation` variables for `Set Actor Location and Rotation` node
+UE5/tcpRelay:
+    receives bytes(msg_in), parses to string and splits into list
+    converts list of strings to floats and creates `floats_in` array
+    relays floats_in array to pythonPawn through bpi_relay interface
+
+UE5/pythonPawn:
+    recieves floats_in array from tcp_relay via bpi_relay interface
+    parses floats_in arrays by index to assign values to vectors, rotators, or bools with == nodes
+    gets data from environment, such as 1.0 for a collision event or a distance using a line trace, to create floats_out array
+    sends floats_out array to tcpRelay via bpi_relay
+
+UE5/tcpRelay: 
+    recieves floats_out from pythonPawn, encodes to bytes, returns to Python
+
+Python
+    recieves floats from tcp_relay as msg_in
+    parses msg_in to floats and uses data in main loop
+
+repeats
+```
 
