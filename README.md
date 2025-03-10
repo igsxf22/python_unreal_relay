@@ -12,13 +12,24 @@ This can be used to control UE5 actors, characters, and environments with simple
 ## Files:
 `bp_tcpRelay_no_bpi.uasset`<br>
 Blueprint that uses the SpartanCode TCP Socket Plugin parent class to convert bytes from Python to an array of floats
-- Full blueprint image: [bp_tcpRelay - Graph](media/bp_tcpRelay_overall.jpg)<br>
-- Top: [bp_tcpRelay - Graph Top](media\bp_tcpRelay_noBpi_graph_top.jpg)
-- Bottom: [bp_tcpRelay - Graph Bottom](media\bp_tcpRelay_noBpi_graph_bottom.jpg)
+- Full blueprint image: [bp_tcpRelay - Graph](media/bp_tcpRelay_overall.png)<br>
+- Top: [bp_tcpRelay - Graph Top](media/bp_tcpRelay_noBpi_graph_top.jpg)
+- Bottom: [bp_tcpRelay - Graph Bottom](media/bp_tcpRelay_noBpi_graph_bottom.jpg)
 <br>
 
 `bpi_relay.uasset`<br>
  Basic blueprint interface to exchange data between the tcp_relay and other UE actors
+
+ ### Quick How-To
+ 1. Start a new UE project and enable the SpartanCode TCP Socket Plugin
+ 2. Add the `bp_tcpRelay`, `bpi_relay`, and `bp_pythoPawn` to your project
+ 3. In your `tcpRelay` actor, use the `Get Actor of Class` to identify the `pythonPawn` as the target for the blueprint interface
+ 4. Conversely, in your `pythonPawn`, use the `Get Actor of Class` node to indetify the `tcpRelay` actor
+ 5. Add the message and custom event fuctions from `bpi_relay` to the proper nodes in the `tcpRelay` and `pythonPawn` graphs
+ 6. Place your `tcpRelay` actor in the level, and either place the `pythonPawn` actor in the level or make it your player pawn
+ 7. Launch `tcp_relay.py` as a main python script and it will start sending values to UE5
+ 8. The `pythonPawn` should begin moving and rotating based on the python script
+ 9. The python script will recieve bytes containing the three floats generated in realtime from the `pythonPawn` (you can parse with .split() and convert to floats) 
 
 
 ## Setup from new Unreal Engine 5 - Blank Game with Blueprints
@@ -125,7 +136,14 @@ We'll use the notional x, y, z, roll, pitch, yaw values we're sending in the exa
 > You may need to create a new blank GameMode to select the pawn as your default player pawn class, or swap to FunctionalTest mode to use spectactor camera as player pawn
 
 #### Download sample pawn
+Download `bp_pythonPawn_noBpi.uasset`
+> Suggest duplicating this asset as `bp_pythonPawn_bpi` before making edits
 
+First, add bpi_relay to Implemented Inferfaces
+
+Make these three edits to the pythonPawn blueprint:
+
+#### Create sample pawn
 
 1. Create a new Pawn blueprint
 
@@ -141,20 +159,17 @@ We'll use the notional x, y, z, roll, pitch, yaw values we're sending in the exa
     
     We'll also create variables `relay_actor` and `floats_in` by promoting output nodes to variables 
 
-2. In event graph, identify Tcp Relay actor to communicate with:
+3. In event graph, identify Tcp Relay actor to communicate with:
 
     `Event Begin Play: --> Get Actor of Class --> Promote Actor to new variable: relay_actor`
     - Use the Get Actor of Class node to select the class of the tcp_relay actor (*if you're using the one in this repo, it'd be `bp_tcpRelay_no_bpi`*)
     - This is now the `relay_actor` variable
 
-3. In Class Settings, add the blueprint interface (*ie `bpi_relay`*) to your Implemented Interfaces. Then, implement the event in your Event Graph.
+4. In Class Settings, add the blueprint interface (*ie `bpi_relay`*) to your Implemented Interfaces. Then, implement the event in your Event Graph.
 
-4. Implement the `relay_float_array` as a custom event, connect to the branch using the `live_data` bool (prevents attempts to parse until next tick) and promote output to `floats_in`
+5. Implement the `relay_float_array` as a custom event, connect to the branch using the `live_data` bool (prevents attempts to parse until next tick) and promote output to `floats_in`
 
-5. Create a new transform variable `transform`
-
-Iterate through the floats_in array and assign the values to the transform object
-
+6. In event tick loop, parse `floats_in` and assign values by index to `location` and `rotation` variables
     ```
     x = floats_in[0]`
     y = floats_in[1]`
@@ -162,6 +177,8 @@ Iterate through the floats_in array and assign the values to the transform objec
     roll = floats_in[3]`
     pitch = floats_in[4]`
     yaw = floats_in[5]`
+    
     ```
 
+7. Use the `location` and `rotation` variables for `Set Actor Location and Rotation` node
 
