@@ -9,14 +9,18 @@ This can be used to control UE5 actors, characters, and environments with simple
 - Example: Add context to the SITL world by simulating a lidar height sensor
 <br>
 
-## Files:
-`bp_tcpRelay_no_bpi.uasset`<br>
-Blueprint that uses the SpartanCode TCP Socket Plugin parent class to convert bytes from Python to an array of floats
-- Full blueprint image: [bp_tcpRelay - Graph](media/bp_tcpRelay_overall.png)<br>
-<br>
+## Components:
+`tcp_relay.py`
+- Basic python TCP client with some error handling and a function to assemble floats in a list for the tcpRelay actor to parse in Unreal
+
+`bp_tcpRelay.uasset`<br>
+- Blueprint that uses the SpartanCode TCP Socket Plugin parent class to convert bytes from Python to an array of floats
 
 `bpi_relay.uasset`<br>
- Basic blueprint interface to exchange data between the tcp_relay and other UE actors
+- Basic blueprint interface to exchange data between the tcp_relay and other UE actors
+
+`bp_pythonPawn`<br>
+- Simple pawn that moves and rotates based on the values sent by the Python script
 
  ### Quick How-To
  1. Start a new UE project and enable the SpartanCode TCP Socket Plugin
