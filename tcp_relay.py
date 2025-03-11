@@ -77,7 +77,7 @@ class TCP_Relay:
         while True:
             while self.linked:
                 try:
-                    self.message_in = self.client_socket.recv(1024)
+                    self.message_in = self.client_socket.recv(self.size)
                 except socket.error as e:
                     print(f"Receive error: {e}")
                     self.message_in = None
