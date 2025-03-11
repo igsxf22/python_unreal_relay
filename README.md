@@ -1,15 +1,19 @@
 # Control Actors and Pawns in UE5 with Python in Realtime 
 
-This project provides a simple way with native python libraries to exchange real-time data from a python script to an Unreal Engine 5 runtime
+This project provides a minimalist method to exchange real-time data between a python script and an Unreal Engine 5 runtime
 
-This can be used to control UE5 actors, characters, and environments with simple data from Python
-- Example: using ArduPilot SITL to control the location and orientation of an actor in UE5
+This can be used to control UE5 actors, characters, and environments with simple data from Python:
+
+- Use ArduPilot SITL to control the location and orientation of an actor in UE5
+
+- Visualize a reinforcement learning agent interacting with the environment
 
 ...and to receive feedback from interactions with the UE5 environment:
-- Example: Add context to the SITL world by simulating a lidar height sensor
+
+- Add context to the SITL world by simulating a lidar height sensor 
 <br>
 
-## Components:
+## Components
 `tcp_relay.py`
 - Basic python TCP client with some error handling and a function to assemble floats in a list for the tcpRelay actor to parse in Unreal
 
@@ -59,9 +63,6 @@ Enable blueprints.
 ![Project screenshot](media/tcp_socket_plugin_enable.jpg)
 
 Enable plugin the and a window will pop-up up prompting you to restart UE Editor, click **Restart Now**
-
-### Set up TCP Relay Actor using TCP Socket Plugin
-We'll import the invisible TCP Relay actor that we can drag into the level
 
 ### Download Blueprints
 ```
