@@ -1,6 +1,6 @@
 # Control Actors and Pawns in UE5 with Python in Realtime 
 
-This project provides a minimalist method to exchange real-time data between a python script and an Unreal Engine 5 runtime
+This project provides a minimalist method to exchange real-time data between a python script and an Unreal Engine 5 runtime.
 
 This can be used to control UE5 actors, characters, and environments with simple data from Python:
 
@@ -12,6 +12,7 @@ This can be used to control UE5 actors, characters, and environments with simple
 
 - Add context to the SITL world by simulating a lidar height sensor 
 <br>
+
 
 ## Components
 `tcp_relay.py`
@@ -99,10 +100,12 @@ With your TCP relay actor placed in the UE level, start the Play in Editor to la
 
 ![Project screenshot](media/data_exchanged.jpg)
 
-<br>
-- The Python code will print the data it's sending out and data its receiving (23 fields out, 3 in by default)<br><br>
+- The Python code will print the msg_out and msg_in (23 fields out, 3 in by default)<br> 
 
 ![Project screenshot](media/python_data_exchanged.jpg)
+
+> Make sure you're sending at least one value back to Python
+> Note that out and in are relative to the sender
 
 ### Controlling a basic UE5 Actor or Pawn
 The example pawn has the following variables:
