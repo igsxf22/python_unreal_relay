@@ -1,6 +1,6 @@
 # Control Actors and Pawns in UE5 with Python in Realtime 
   
-`  Required Unreal Engine 5 version:  5.5.3 `
+`Components require UnrealEngine vers 5.5.3`
   
 This project provides a minimalist method to exchange real-time data between a python script and an Unreal Engine 5 runtime.
 
