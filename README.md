@@ -36,9 +36,10 @@ This can be used to control UE5 actors, characters, and environments with simple
  4. Conversely, in your `bp_pythonPawn`, use the `Get Actor of Class` node to indetify the `bp_tcpRelay` actor
  5. Place your `tcpRelay` actor in the level
  6. Place the `pythonPawn` actor in the level, or, make it your player pawn (you might need to create a new blank GameMode to change default player pawn)
- 7. Launch `tcp_relay.py` as a main python script and it will start sending values to UE5
- 8. The `pythonPawn` should begin moving and rotating based on the python script
- 9. The python script will recieve bytes containing the three floats generated in realtime from the `pythonPawn` (you can parse with .split() and convert to floats) 
+ 7. Launch `tcp_relay.py` as a main python script and it will start listening for the tcp_Relay actor connect
+ 8. Launch UE level using Play in Editor, tcp_Relay actor will connect and both UE and Python should start printing the relay data
+ 9. The `pythonPawn` should begin moving and rotating based on the python script
+ 10. The python script will recieve bytes containing the three floats generated in realtime from the `pythonPawn` (you can decode to string, parse with .split() and convert to floats) 
 
 
 ## Setup from new Unreal Engine 5 - Blank Game with Blueprints
@@ -106,7 +107,7 @@ With your TCP relay actor placed in the UE level, start the Play in Editor to la
 
 ![Project screenshot](media/python_data_exchanged.jpg)
 
-> Make sure you're sending at least one value back to Python
+> Make sure you're sending at least one value back to Python<br>
 > Note that out and in are relative to the sender
 
 ### Controlling a basic UE5 Actor or Pawn
