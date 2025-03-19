@@ -162,4 +162,22 @@ Python
 
 repeats
 ```
+## Common Issues and Fixes
 
+- **TCP Errors, 'socket in use'**
+   - If python crashed or didn't close naturally, the socket might still be in use - Restart the python kernel
+
+- **Downloaded unreal assets placed in the project folder, but don't appear in Content Drawer in Unreal Editor**
+  - Make sure you're on Unreal Engine 5.5.3 or later
+
+- **Can't change my Player pawn, option for `Default pawn - Select Pawn class` is grayed out**
+  - Create a new blank blame game mode
+
+- **pythonPawn isn't moving**
+  - check that bp_tcpRelay is placed in the level
+  - check that bp_tcpRelay `Get Actor of Class` node selects the exact pythonPawn you're trying to use
+    - also check that you only have one pythonPawn of the class you selected, its only going to target the first one, or add your own rules
+  - check that the `Get Actor of Class` node in the pythonPawn selects the proper bp_tcpRelay class, in case you made a modified one
+
+- **tcp_relay.py isn't showing any data after saying "Connected"**
+  - Make sure you didn't disconnect any nodes that the bp_tcpRelay actor uses to send data back to Python, even if its just 0.0's
