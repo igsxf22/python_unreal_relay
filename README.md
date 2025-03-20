@@ -26,8 +26,15 @@ This can be used to control UE5 actors, characters, and environments with simple
 `bpi_relay.uasset`<br>
 - Basic blueprint interface to exchange data between the tcp_relay and other UE actors
 
-`bp_pythonPawn`<br>
+`bp_pythonPawn.uasset`<br>
 - Simple pawn that moves and rotates based on the values sent by the Python script
+
+### Optional:
+`bp_pythonPawn_Camera.uasset`
+- Alternate pythonPawn that includes a camera
+
+`pythonPawn_GameMode.uasset`
+- Game Mode that uses `bp_pythonPawn` as the default player pawn (game view will be camera of  `bp_pythonPawn_Camera`)
 
  ### Quick How-To
  1. Start a new UE project and enable the SpartanCode TCP Socket Plugin
