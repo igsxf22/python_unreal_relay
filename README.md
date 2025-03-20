@@ -42,11 +42,12 @@ This can be used to control UE5 actors, characters, and environments with simple
  3. In your `bp_tcpRelay` actor, use the `Get Actor of Class` to identify the `pythonPawn` as the `send_to` actor
  4. Conversely, in your `bp_pythonPawn`, use the `Get Actor of Class` node to indetify the `bp_tcpRelay` actor
  5. Place your `tcpRelay` actor in the level
- 6. Place the `pythonPawn` actor in the level, or, make it your player pawn (you might need to create a new blank GameMode to change default player pawn)
- 7. Launch `tcp_relay.py` as a main python script and it will start listening for the tcp_Relay actor connect
- 8. Launch UE level using Play in Editor, tcp_Relay actor will connect and both UE and Python should start printing the relay data
- 9. The `pythonPawn` should begin moving and rotating based on the python script
- 10. The python script will recieve bytes containing the three floats generated in realtime from the `pythonPawn` (you can decode to string, parse with .split() and convert to floats) 
+ 6. Place the `pythonPawn` actor in the level
+    - **OR** If you want to use the `pythonPawn_Camera` as a first-person character, don't place a pawn, just change GameMode to pythonPawn_GameMode
+ 8. Launch `tcp_relay.py` as a main python script and it will start listening for the tcp_Relay actor connect
+ 9. Launch UE level using Play in Editor, tcp_Relay actor will connect and both UE and Python should start printing the relay data
+ 10. The `pythonPawn` should begin moving and rotating based on the python script
+ 11. The python script will recieve bytes containing the three floats generated in realtime from the `pythonPawn` (you can decode to string, parse with .split() and convert to floats) 
 
 
 ## Setup from new Unreal Engine 5 - Blank Game with Blueprints
@@ -75,11 +76,13 @@ Enable blueprints.
 
 Enable plugin the and a window will pop-up up prompting you to restart UE Editor, click **Restart Now**
 
-### Download Blueprints
+### Download Unreal Assets
 ```
 bp_tcpRelay.uassest
 bp_pythonPawn.uasset
+bp_pythonPawn_Camera.uasset
 bpi_relay.uasset
+pythonPawn_GameMode.uasset
 ```
 Create a `custom` folder in the `content` folder in the Content Drawer. In Explorer,place these blueprints in you Unreal Project/content folder
 
