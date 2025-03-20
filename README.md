@@ -36,7 +36,7 @@ This can be used to control UE5 actors, characters, and environments with simple
 `pythonPawn_GameMode.uasset`
 - Game Mode that uses `bp_pythonPawn` as the default player pawn (game view will be camera of  `bp_pythonPawn_Camera`)
 
- ### Quick How-To
+ ## Quick How-To
  1. Start a new UE project and enable the SpartanCode TCP Socket Plugin
  2. Add the `bp_tcpRelay`, `bpi_relay`, and `bp_pythoPawn` to your project
  3. In your `bp_tcpRelay` actor, use the `Get Actor of Class` to identify the `pythonPawn` as the `send_to` actor
