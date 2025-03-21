@@ -40,6 +40,7 @@ This can be used to control UE5 actors, characters, and environments with simple
  1. Start a new UE project and enable the SpartanCode TCP Socket Plugin
  2. Add the `bp_tcpRelay`, `bpi_relay`, and `bp_pythoPawn` to your project
  3. In your `bp_tcpRelay` actor, use the `Get Actor of Class` to identify the `pythonPawn` as the `send_to` actor
+   - *This should be already be set to bp_pythonPawn by default*
  4. Conversely, in your `bp_pythonPawn`, use the `Get Actor of Class` node to indetify the `bp_tcpRelay` actor
  5. Place your `tcpRelay` actor in the level
  6. Place the `pythonPawn` actor in the level
