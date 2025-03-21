@@ -39,16 +39,16 @@ This can be used to control UE5 actors, characters, and environments with simple
  ## Quick How-To
  1. Start a new UE project and enable the SpartanCode TCP Socket Plugin
  2. Add the `bp_tcpRelay`, `bpi_relay`, and `bp_pythoPawn` to your project
+ > Steps 3 and 4 are set by default, but its a good idea to check out these fields; you'll need them to redirect the TCP data if you want to use custom actors
  3. In your `bp_tcpRelay` actor, use the `Get Actor of Class` to identify the `pythonPawn` as the `send_to` actor
-   - *This should be already be set to bp_pythonPawn by default*
  4. Conversely, in your `bp_pythonPawn`, use the `Get Actor of Class` node to indetify the `bp_tcpRelay` actor
  5. Place your `tcpRelay` actor in the level
  6. Place the `pythonPawn` actor in the level
     - **OR** If you want to use the `pythonPawn_Camera` as a first-person character, don't place a pawn, just change GameMode to pythonPawn_GameMode
- 8. Launch `tcp_relay.py` as a main python script and it will start listening for the tcp_Relay actor connect
- 9. Launch UE level using Play in Editor, tcp_Relay actor will connect and both UE and Python should start printing the relay data
- 10. The `pythonPawn` should begin moving and rotating based on the python script
- 11. The python script will recieve bytes containing the three floats generated in realtime from the `pythonPawn` (you can decode to string, parse with .split() and convert to floats) 
+ 7. Launch `tcp_relay.py` as a main python script and it will start listening for the tcp_Relay actor connect
+ 8. Launch UE level using Play in Editor, tcp_Relay actor will connect and both UE and Python should start printing the relay data
+ 9. The `pythonPawn` should begin moving and rotating based on the python script
+ 10. The python script will recieve bytes containing the three floats generated in realtime from the `pythonPawn` (you can decode to string, parse with .split() and convert to floats) 
 
 
 ## Setup from new Unreal Engine 5 - Blank Game with Blueprints
@@ -146,6 +146,21 @@ Then we use an `Actor Set Location and Rotation` node using the location vector 
 Start play-in-editor runtime. The pawn should begin moving and rotating based on the python values
 ![Project screenshot](media/success_pawn_control.jpg)
 
+#### Change the basic TCP relay script
+You can import the TCP_Relay class and create_fields_string function into your own python scripts, or copy the `tcp_relay.py` file, edit, and run as main.
+
+All you have to do is add your own code to update the location x, y, z and the rotation roll, pitch, yaw
+* Convert your values for location and rotation to `centimeters` and `degrees` before sending them to Unreal
+```
+while True:
+  x, y, z = <code to update location> # centimeters
+  roll, pitch, yaw = <code to update rotation>  # degrees
+  fields[:6] = [x, y, z, roll, pitch, yaw]
+  relay.msg = fields
+```
+> NOTE: Unreal uses a left-handed coordinate system: [Unreal Coordinate System](https://dev.epicgames.com/documentation/en-us/unreal-engine/coordinate-system-and-spaces-in-unreal-engine)<br>
+>- If the `pythonPawn` in Unreal isn't moving or rotating as expected, you may need to invert the direction of some of your axes or rotations
+
 Here's an overview of the entire process:
 ```
 Python:
@@ -192,3 +207,7 @@ repeats
 
 - **tcp_relay.py isn't showing any data after saying "Connected"**
   - Make sure you didn't disconnect any nodes that the bp_tcpRelay actor uses to send data back to Python, even if its just 0.0's
+
+- **pythonPawn is moving the wrong direction or rotating the opposite way**
+  - Confirm that your python code is using Unreal's coordinate system, or add code to reconcile the differences before sending the values to Unreal
+  - Check that your `fields[3:6]` are in the proper order for rotations: `[roll, pitch, yaw]`. If you want to use quaternions, you can change the fields and use another item, just make sure you make the proper adjustments in your pawn or actor blueprint 
