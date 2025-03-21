@@ -24,7 +24,7 @@ Notes:
 - The TCP Socket Plugin must be installed and enabled in Unreal Engine.
 - The TCP Socket Plugin must be configured to use the same host and port as the TCP relay server.
 - The TCP Socket Plugin must be configured to use the same number of fields as the TCP relay server.
-- The TCP relay server will send the message string to Unreal Engine every 2ms.
+- The TCP relay server will send the message string to Unreal Engine every 4ms.
 - Message size should have plenty of overhead to account for the size of the fields and any additional data, but adjust as needed.
 - Not tested in Unreal Engine 4, but the SpartanCode page indicates it should work.
 """
@@ -61,7 +61,7 @@ class TCP_Relay:
         client_socket (socket.socket): The client socket connected to the server.
         thread (threading.Thread): The thread running the sender method.
     """
-    def __init__(self, num_fields=23, host="127.0.0.1", port=1234, size=1024):
+    def __init__(self, num_fields=23, host="127.0.0.1", port=1234, size=512):
         self.server_socket = create_tcp_host(host, port)
         self.num_fields = num_fields
         self.size = size
@@ -99,7 +99,7 @@ class TCP_Relay:
                 except socket.error as e:
                     print(f"Accept error: {e}")
 
-            time.sleep(0.002)
+            time.sleep(0.004)
 
 # Example usage
 if __name__ == "__main__":
@@ -126,4 +126,4 @@ if __name__ == "__main__":
         else:
             print("No message received.")
 
-        time.sleep(1)
+        time.sleep(0.5)
