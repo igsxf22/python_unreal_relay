@@ -127,7 +127,7 @@ The example pawn recieves the x, y, z, roll, pitch, yaw in the first six items w
 
 ```
 floats_in[:3] --> location vector
-floats_in[:6] --> rotation rotator
+floats_in[3:6] --> rotation rotator
 ```
 
 Then we use an `Actor Set Location and Rotation` node using the location vector and rotation rotator
